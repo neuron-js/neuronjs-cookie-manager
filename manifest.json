@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+
+  "name": "xhs debugger",
+  "description": "set xhs develop environment",
+  "version": "1.0",
+
+  "browser_action": {
+    "default_icon": "icon/off.png"
+  },
+  "permissions": [
+    "cookies",
+    "tabs",
+    "*://*.xiaohongshu.com/*"
+  ],
+  "background": {
+    "scripts": [
+      "js/background.js"
+    ]
+  }
+}
