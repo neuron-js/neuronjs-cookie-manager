@@ -1,12 +1,3 @@
-function mylog(text) {
-  chrome.browserAction.setTitle({'title': text});
-  //chrome.browserAction.setBadgeText({"text": text});
-}
-
-chrome.cookies.onChanged.addListener(function(info) {
-  console.log("onChanged" + JSON.stringify(info));
-});
-
 function MyCookie() {
   var check = this.isSupport();
   if (!check) {
@@ -80,7 +71,7 @@ MyCookie.prototype.checkDebug = function(currentURL,tabId, mode){
       targetCookies = cookies;
       var status = false;
       if(cookies.length == 0){
-        //mylog("error domain");
+        mylog("error domain");
         return;
       }
       cookies.some(function(cookie) {
@@ -113,6 +104,13 @@ MyCookie.prototype.checkDebug = function(currentURL,tabId, mode){
         });
       }
       changeIcon(!status, tabId);
+
+      chrome.tabs.getSelected(null, function(tab){
+        chrome.tabs.reload(tab.id,{},function(){
+          console.log('reload');
+        });
+      });
+
     });
 }
 
@@ -127,7 +125,15 @@ function changeIcon(status, tabId) {
   }, function() {});
 }
 
+function mylog(text) {
+  chrome.browserAction.setTitle({'title': text});
+}
+
 var cookie = new MyCookie();
+
+
+chrome.cookies.onChanged.addListener(function(info) {
+});
 
 chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
   selectedId = tabs[0].id;
