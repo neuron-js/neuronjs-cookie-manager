@@ -103,11 +103,12 @@ MyCookie.prototype.checkDebug = function(currentURL,tabId, mode){
           //document.getElementById('text').innerHTML = cookie;
         });
       }
-      changeIcon(!status, tabId);
 
-      chrome.tabs.getSelected(null, function(tab){
-        chrome.tabs.reload(tab.id,{},function(){
-          console.log('reload');
+      changeIcon(!status, tabId, function(){
+        chrome.tabs.getSelected(null, function(tab){
+          chrome.tabs.reload(tab.id,{},function(){
+            console.log('reload');
+          });
         });
       });
 
@@ -115,14 +116,16 @@ MyCookie.prototype.checkDebug = function(currentURL,tabId, mode){
 }
 
 
-function changeIcon(status, tabId) {
+function changeIcon(status, tabId, callback) {
   var path = status ? 'icon/on.png' : 'icon/off.png';
   var environment = status ? 'development' : 'product';
   mylog(environment);
   chrome.browserAction.setIcon({
     'path': path,
     'tabId': tabId
-  }, function() {});
+  }, function() {
+    callback && callback();
+  });
 }
 
 function mylog(text) {
@@ -133,6 +136,7 @@ var cookie = new MyCookie();
 
 
 chrome.cookies.onChanged.addListener(function(info) {
+  console.log('cookie changed');
 });
 
 chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
