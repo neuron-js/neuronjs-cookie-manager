@@ -64,16 +64,18 @@ MyCookie.prototype.checkDebug = function(currentURL,tabId, mode){
   var self = this;
   var DEBUG = '_fdebug';
   var targetCookies = [];
-    var domain = currentURL.match(/^[\w-]+:\/*\[?([\w\.:-]+)\]?(?::\d+)?/)[1];
+    var check_domain = currentURL.match(/^[\w-]+:\/*\[?([\w\.:-]+)\]?(?::\d+)?/);
+    if(check_domain == null){
+      mylog("error domain");
+      return;
+    }
+    var domain = check_domain[1];
     self.getAll({
       'domain': domain
     }, function(cookies) {
       targetCookies = cookies;
       var status = false;
-      if(cookies.length == 0){
-        mylog("error domain");
-        return;
-      }
+      
       cookies.some(function(cookie) {
         if (cookie.name == DEBUG && cookie.path == '/') {
           status = true;
