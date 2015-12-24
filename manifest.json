@@ -14,7 +14,8 @@
   },
   "permissions": [
     "cookies",
-    "tabs"
+    "tabs",
+    "*://*/*"
   ],
   "background": {
     "scripts": [
