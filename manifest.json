@@ -15,7 +15,6 @@
   "permissions": [
     "cookies",
     "tabs",
-    "http://localhost:8004/*",
     "*://*/*"
   ],
   "background": {
